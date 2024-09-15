@@ -254,6 +254,10 @@ h2 {
     margin: 15px;
   }
 
+  .card h1 {
+    font-size: 65px;
+  }
+  
   .card h2 {
     font-size: 35px; 
   }

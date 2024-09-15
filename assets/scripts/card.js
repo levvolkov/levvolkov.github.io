@@ -15,8 +15,8 @@ const cumulativeOffset = (element) => {
   };
 };
 
-if (window.innerWidth > 940) {
-  // Только для экранов шириной больше 940px
+if (window.innerWidth > 1024) {
+  // Только для экранов шириной больше 1024px
   document.onmousemove = (event) => {
     const e = event || window.event;
     const x = (e.pageX - cumulativeOffset($card).left - 350 / 2) * -0.01;
@@ -32,5 +32,5 @@ if (window.innerWidth > 940) {
     $card.style.transform = `matrix3d(${matrix.toString()})`;
   };
 } else {
-  console.log("Ширина экрана 940px или меньше: обработчик отключён.");
+  console.log("Ширина экрана 1024px или меньше: обработчик отключён.");
 }

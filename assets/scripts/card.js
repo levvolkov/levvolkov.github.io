@@ -5,12 +5,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const links = document.querySelector(".social-links");
   const body = document.body;
 
-  // Функция для отключения обработки событий на небольших экранах
   function handleSmallScreen() {
     return window.innerWidth <= 1024;
   }
 
-  // Анимация движения (работает только на больших экранах)
+  // Инициализация эффектов при загрузке (если курсор уже на странице)
+  function initEffects() {
+    if (!handleSmallScreen()) {
+      card.classList.add("has-transform");
+      title.classList.add("has-transform");
+      speciality.classList.add("has-transform");
+      links.classList.add("has-transform");
+    }
+  }
+
+  // Проверяем положение курсора при загрузке
+  body.addEventListener("mousemove", function initFirstMove(e) {
+    if (!handleSmallScreen()) {
+      initEffects();
+      // Удаляем этот одноразовый обработчик после инициализации
+      body.removeEventListener("mousemove", initFirstMove);
+    }
+  });
+
+  // Анимация движения
   body.addEventListener("mousemove", function (e) {
     if (!handleSmallScreen()) {
       const xAxis = (window.innerWidth / 2 - e.clientX) / 50;
@@ -39,4 +57,4 @@ document.addEventListener("DOMContentLoaded", function () {
       card.style.transform = "rotateY(0deg) rotateX(0deg)";
     }
   });
-});
+});                        

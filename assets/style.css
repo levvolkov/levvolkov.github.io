@@ -43,6 +43,7 @@ body {
   -webkit-perspective: 1000px;
   perspective: 1000px;
   mix-blend-mode: difference;
+  z-index: 1;
 }
 
 .card {
@@ -61,7 +62,7 @@ body {
   border: 2.5px solid black;
   box-shadow: 
     0 6px 12px rgba(255, 255, 255, 0.6),  
-    0 3px 6px rgba(15, 11, 11, 0.6); 
+    0 3px 6px rgba(15, 11, 11, 0.6);
 }
 
 .card.has-transform {
@@ -96,7 +97,7 @@ body {
   bottom: -20px !important;
   width: calc(100vw + 40px) !important;
   height: calc(100vh + 40px) !important;
-  z-index: -1; 
+  
 }
 
 .topics {
@@ -122,6 +123,7 @@ body {
   top: 0;
   left: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
 /* СТИЛИ ДЛЯ ИКОНОК-КНОПОК _________________________________________________________________________________________________________________________________________________________________________________________*/

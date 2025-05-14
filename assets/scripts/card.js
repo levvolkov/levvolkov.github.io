@@ -1,36 +1,42 @@
-const $card = document.querySelector(".card");
+document.addEventListener("DOMContentLoaded", function () {
+  const card = document.querySelector(".card");
+  const title = document.querySelector(".title");
+  const speciality = document.querySelector(".speciality");
+  const links = document.querySelector(".social-links");
+  const body = document.body;
 
-const cumulativeOffset = (element) => {
-  let top = 0,
-    left = 0;
-  do {
-    top += element.offsetTop || 0;
-    left += element.offsetLeft || 0;
-    element = element.offsetParent;
-  } while (element);
+  // Функция для отключения обработки событий на небольших экранах
+  function handleSmallScreen() {
+    return window.innerWidth <= 1024;
+  }
 
-  return {
-    top: top,
-    left: left,
-  };
-};
+  // Анимация движения (работает только на больших экранах)
+  body.addEventListener("mousemove", function (e) {
+    if (!handleSmallScreen()) {
+      const xAxis = (window.innerWidth / 2 - e.clientX) / 50;
+      const yAxis = (window.innerHeight / 2 - e.clientY) / 50;
+      card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    }
+  });
 
-if (window.innerWidth > 1024) {
-  // Только для экранов шириной больше 1024px
-  document.onmousemove = (event) => {
-    const e = event || window.event;
-    const x = (e.pageX - cumulativeOffset($card).left - 350 / 2) * -0.01;
-    const y = (e.pageY - cumulativeOffset($card).top - 350 / 2) * -0.01;
+  // Анимация при наведении (также отключается на малых экранах)
+  body.addEventListener("mouseenter", function () {
+    if (!handleSmallScreen()) {
+      card.classList.toggle("has-transform");
+      title.classList.toggle("has-transform");
+      speciality.classList.toggle("has-transform");
+      links.classList.toggle("has-transform");
+    }
+  });
 
-    const matrix = [
-      [1, 0, 0, -x * 0.00005],
-      [0, 1, 0, -y * 0.00005],
-      [0, 0, 1, 1],
-      [0, 0, 0, 1],
-    ];
-
-    $card.style.transform = `matrix3d(${matrix.toString()})`;
-  };
-} else {
-  console.log("Ширина экрана 1024px или меньше: обработчик отключён.");
-}
+  // Возвращает карточку в исходное положение, когда курсор полностью покидает тело страницы
+  body.addEventListener("mouseleave", function () {
+    if (!handleSmallScreen()) {
+      card.classList.remove("has-transform");
+      title.classList.remove("has-transform");
+      speciality.classList.remove("has-transform");
+      links.classList.remove("has-transform");
+      card.style.transform = "rotateY(0deg) rotateX(0deg)";
+    }
+  });
+});

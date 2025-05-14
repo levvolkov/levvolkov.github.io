@@ -17,6 +17,7 @@ const myTags = [
   "InteliJ IDEA",
   "Selenide",
   "VSCode",
+  "Allure Report", // !!!
   "Node.js",
   "Jest",
   "Playwright",
@@ -33,7 +34,7 @@ const myTags = [
   "Grafana",
 ];
 
-var tagCloud = TagCloud(".content", myTags, {
+var tagCloud = TagCloud(".topics", myTags, {
   radius: 460,
   maxSpeed: "fast",
   initSpeed: "fast",
@@ -43,5 +44,5 @@ var tagCloud = TagCloud(".content", myTags, {
 
 var colors = ["#778899"];
 var random_color = colors[Math.floor(Math.random() * colors.length)];
-var contentElement = document.querySelector(".content");
+var contentElement = document.querySelector(".topics");
 contentElement.style.color = random_color;

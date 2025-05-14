@@ -1,60 +1,105 @@
 @font-face {
-    font-family: "Bevan";
-    src: url("Bevan-Regular.ttf") format("truetype");
+  font-family: "Bevan";
+  src: url("Bevan-Regular.ttf") format("truetype");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* outline: 1px solid red !important; */
 }
 
 html, body {
   overflow: hidden;
-  margin: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000;
-  position: absolute;
   user-select: none; /* Запретить выделение текста */
   -moz-user-select: none; /* Для Firefox */
   -webkit-user-select: none; /* Для Safari */
   -ms-user-select: none; /* Для IE */
 }
 
-#container {
+body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.75s ease-out;
+  background-color: #000;
+}
+
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: center; 
+  justify-content: center; 
+  height: 100%; 
   width: 100%;
-  height: 100%;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  mix-blend-mode: difference;
 }
 
 .card {
-  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  mix-blend-mode: difference;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.05);
+  position: relative; 
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  background-color: rgba(255, 255, 255, 0.05); 
   background-size: cover;
-  width: 42%;
-  aspect-ratio: 2 / 1.2; /* Пропорции карты (ширина/высота) */
+  width: 500px;
+  height: 300px;
   border-radius: 25px;
+  border: 2.5px solid black;
   box-shadow: 
-    0 4px 8px rgba(255, 255, 255, 0.6),  
-    0 2px 4px rgba(15, 11, 11, 0.6); 
+    0 6px 12px rgba(255, 255, 255, 0.6),  
+    0 3px 6px rgba(15, 11, 11, 0.6); 
 }
 
-#canvas {
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
+.card.has-transform {
+  transition: all 100ms linear;
 }
 
-.content {
+.title.has-transform {
+  transform: translateZ(100px) !important;
+}
+
+.speciality.has-transform {
+  transform: translateZ(100px) !important;
+}
+
+.social-links.has-transform {
+  transform: translateZ(100px)  !important;
+}
+
+.card { 
+  background-image: 
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.15) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.15) 75%);
+  background-size: 40px 40px;
+  background-position: 0 0;
+}
+  
+#webgl-canvas {
+  position: fixed;
+  top: -20px !important;
+  left: -20px !important;
+  right: -20px !important;
+  bottom: -20px !important;
+  width: calc(100vw + 40px) !important;
+  height: calc(100vh + 40px) !important;
+  z-index: -1; 
+}
+
+.topics {
   font-size: 12px;
   margin: 0;
   padding: 0;
@@ -67,35 +112,35 @@ html, body {
   pointer-events: none;
   overflow: hidden;
   position: absolute;
+  z-index: 1; 
 }
 
-#webgl-canvas {
-  top: 0;
-  left: 0;
+.particles-canvas {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: fixed;
-
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
-/* СТИЛИ ДЛЯ ИКОНОК-КНОПОК СОЦСЕТЕЙ _________________________________________________________________________________________________________________________________________________________________________________________*/
+/* СТИЛИ ДЛЯ ИКОНОК-КНОПОК _________________________________________________________________________________________________________________________________________________________________________________________*/
 
 .social-links {
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  margin-top: 26vh;
-} 
+  margin-top: 170px; 
+}
 
 .button-container {
-  margin: 26px;
+  margin: 6px;
 }
 
 .button {
   height: 4rem;
   width: 4rem;
-  stroke: #FFF;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -110,8 +155,12 @@ html, body {
   background-color: rgba(255, 255, 255, 0.2);
   box-shadow: 
     0 2px 4px rgba(255, 255, 255, 0.6),  
-    0 1px 2px rgba(255, 255, 255, 0.6);  
-  } 
+    0 1px 2px rgba(255, 255, 255, 0.6); 
+  background-image: 
+  radial-gradient(circle at center, transparent 58%, rgba(255,255,255,0.3) 60%, transparent 62%);
+  background-size: 10px 10px;
+  background-position: 0 0, 10px 10px;
+} 
 
 .button-container:hover .icon_image {
   display: none;
@@ -122,24 +171,28 @@ html, body {
 }
 
 .icon_image {
-  border: 1px solid white; 
+  border: 2px solid black; 
   padding: 7px; 
   border-radius: 10px; 
   position: relative; 
-  background-color: rgba(255, 255, 255, 0.2); 
+  background-color: rgba(255, 255, 255, 0.25); 
   box-shadow: 
     0 2px 4px rgba(255, 255, 255, 0.6),  
     0 1px 2px rgba(255, 255, 255, 0.6); 
+  background-image: 
+  radial-gradient(circle at center, transparent 58%, rgba(255,255,255,0.3) 60%, transparent 62%);
+  background-size: 10px 10px;
+  background-position: 0 0, 10px 10px;
 }
 
 .icon_image {
   fill: transparent; 
-  stroke: #FFF;
-  stroke-width: 8;
+  stroke: #000; 
+  stroke-width: 12; 
   stroke-dasharray: 1000;
   stroke-dashoffset: 0;
-  width: 40px;
-  height: 40px;
+  width: 57px;
+  height: 57px;
   animation: icon_draw 5s ease;
 }
 
@@ -153,13 +206,13 @@ html, body {
 }
 
 .icon_below {
-    display: none; 
-    position: absolute; 
-    stroke: #FFFFFF;
-    stroke-width: 4;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 0;
-    animation: iconBorder_draw 3s ease;
+  display: none; 
+  position: absolute; 
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 4;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  animation: iconBorder_draw 3s ease;
 }
 
 @keyframes iconBorder_draw {
@@ -177,18 +230,22 @@ html, body {
 }
 
 .button-container:nth-child(1) {
-  animation-delay: 1s;
+  animation-delay: 0.75s;
 }
 
 .button-container:nth-child(2) {
-  animation-delay: 1.25s;
+  animation-delay: 1s;
 }
 
 .button-container:nth-child(3) {
-  animation-delay: 1.5s;
+  animation-delay: 1.25s;
 }
 
 .button-container:nth-child(4) {
+  animation-delay: 1.5s;
+}
+
+.button-container:nth-child(5) { 
   animation-delay: 1.75s;
 }
 
@@ -206,19 +263,17 @@ html, body {
 /* СТИЛИ ДЛЯ ТЕГА h1, h2 ________________________________________________________________________________________________________________________________________________________________________________________________*/
   
 h1, h2 {
-  z-index: 4;
-  position: absolute;
   pointer-events: none;
   font-family: "Bevan", "sans-serif";
   text-align: center;
-  mix-blend-mode: difference;
-  animation: fadeIn 3s forwards; 
-  font-weight: 0;
+  animation: fadeIn 1s forwards; 
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 h1 {
-  font-size: 68px;
-  margin-bottom: 30vh;
+  font-size: 60px;
+  margin-bottom: 0px; 
   text-shadow: 
     0 2px 5px rgba(255, 255, 255, 0.4),  
     0 1px 3px rgba(255, 255, 255, 0.6),  
@@ -227,8 +282,9 @@ h1 {
 }
 
 h2 {
-  font-size: 40px;
-  margin-bottom: 3vh;
+  font-size: 30px;
+  line-height: 1.2em;
+  margin-bottom: 105px; 
   text-shadow: 
     0 1.7px 4px rgba(255, 255, 255, 0.4),  
     0 0.8px 2.5px rgba(255, 255, 255, 0.5), 
@@ -249,40 +305,51 @@ h2 {
 
 /* МЕДИА ________________________________________________________________________________________________________________________________________________________________________________________________*/
 
+@media (orientation: portrait),
+       (max-width: 1024px) {
+  .card {
+    width: 110%;
+    height: auto; 
+    padding: 20px;
+    margin-bottom: 20px;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    background-image: none; 
+  }
+}
+
 @media (max-width: 430px) {
   .card .button-container {
-    margin: 15px;
+    margin: 4px; 
   }
 
   .card h1 {
-    font-size: 55px;
+    font-size: 52px;
   }
   
   .card h2 {
-    font-size: 35px; 
+    font-size: 34px; 
   }
 }
 
 @media (max-width: 1024px) {
-  .card {
-    width: 100%;
-    height: 100%;
-    border-radius: 0px;
-  }
-
   .card .social-links {
-     margin-top: 45vh;
+     margin-bottom: -25vh;
   }
 
   .card h1 {
-     margin-bottom: 42vh;
+     margin-bottom: 5vh;
+  }
+
+  .card h2 {
+    margin-bottom: 7vh;
   }
 }
 
-@media (max-aspect-ratio: 1/1) {
-    .card {
-        width: 100%;
-        height: 100%;
-        border-radius: 0px; 
-    }
+@media (width: 1024px) and (height: 1366px) {
+  #webgl-canvas {
+    width: 101%;
+    height: 101%;
+  }
 }

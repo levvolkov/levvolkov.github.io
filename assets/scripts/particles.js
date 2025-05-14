@@ -1,3 +1,4 @@
+// Полифил для requestAnimationFrame
 window.requestAnimFrame = (function () {
   return (
     window.requestAnimationFrame ||
@@ -11,12 +12,12 @@ window.requestAnimFrame = (function () {
   );
 })();
 
-var canvas = document.getElementById("canvas");
+// Получаем canvas по классу (первый элемент с этим классом)
+var canvas = document.querySelector(".particles-canvas");
 var context = canvas.getContext("2d");
 
 let dpi = window.devicePixelRatio || 1;
 context.scale(dpi, dpi);
-console.log(dpi);
 
 function fix_dpi() {
   let style_height = +getComputedStyle(canvas)
@@ -30,24 +31,26 @@ function fix_dpi() {
   canvas.setAttribute("width", style_width * dpi);
 }
 
+// Инициализация размеров canvas
+function initCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  fix_dpi();
+}
+window.addEventListener("resize", initCanvas);
+initCanvas();
+
 var particle_count = 90,
   particles = [],
   couleurs = ["#778899", "#778899", "#778899"];
+
 function Particle() {
   this.radius = Math.round(Math.random() * 3 + 5);
   this.x = Math.floor(
-    Math.random() *
-      (+getComputedStyle(canvas).getPropertyValue("width").slice(0, -2) * dpi -
-        this.radius +
-        1) +
-      this.radius
+    Math.random() * (canvas.width - this.radius * 2) + this.radius
   );
   this.y = Math.floor(
-    Math.random() *
-      (+getComputedStyle(canvas).getPropertyValue("height").slice(0, -2) * dpi -
-        this.radius +
-        1) +
-      this.radius
+    Math.random() * (canvas.height - this.radius * 2) + this.radius
   );
   this.color = couleurs[Math.floor(Math.random() * couleurs.length)];
   this.speedx = Math.round(Math.random() * 201 + 0) / 100;
@@ -118,8 +121,9 @@ function Particle() {
     }
   };
 }
+
+// Создаем частицы
 for (var i = 0; i < particle_count; i++) {
-  fix_dpi();
   var particle = new Particle();
   particles.push(particle);
 }
@@ -132,4 +136,6 @@ function animate() {
   }
   requestAnimFrame(animate);
 }
+
+// Запускаем анимацию
 animate();

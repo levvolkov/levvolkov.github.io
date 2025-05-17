@@ -18,10 +18,17 @@
     <meta content='Lev Volkov' name='copyright'/>
     <title> Business card </title>
     <link href="https://fonts.googleapis.com/css?family=Bevan&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <link rel="stylesheet" href="assets/css/preloader.css"/>
 
 </head>
 <body translate="no">
+
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
 
 <div class="container">
 
@@ -85,21 +92,20 @@
     </div>
 </div>
 
+<canvas id="webgl-canvas"></canvas>
 <canvas class="particles-canvas"></canvas>
 <div class="topics"></div>
-<canvas id="webgl-canvas"></canvas>
 
-<script type="module">
-    import { Bokeh1Background } from 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.2/build/backgrounds/bokeh1.cdn.min.js';
-    const bokeh1Background = Bokeh1Background(document.getElementById('webgl-canvas'));
-    bokeh1Background.loadMap('https://cdn.jsdelivr.net/npm/threejs-components@0.0.2/build/assets/bokeh-particles2.png');
-    bokeh1Background.setColors([0x000000, 0x0000CD, 0x1E90FF, 0xFF00FF]);
-    document.body.addEventListener('click', () => {
-    bokeh1Background.setColors([0xffffff * Math.random(), 0xffffff * Math.random(), 0xffffff * Math.random()]);
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        document.body.classList.add('loaded');
+      }, 500); 
     });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/TagCloud@2.2.0/dist/TagCloud.min.js"> </script>
+<script type="text/javascript" src="assets/scripts/background.js"></script>
 <script type="text/javascript" src="assets/scripts/card.js"></script>
 <script type="text/javascript" src="assets/scripts/tools.js"></script>
 <script type="text/javascript" src="assets/scripts/particles.js"></script>

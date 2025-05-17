@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return window.innerWidth <= 1024;
   }
 
-  // Оптимизированная функция инициализации эффектов
+  // Функция инициализации эффектов
   function initEffects() {
     if (!handleSmallScreen()) {
       // Добавляем will-change для оптимизации
